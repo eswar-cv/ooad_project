@@ -1,2 +1,1 @@
-* Hello All 
-* Yay
+* OOAD Project - Submit Ease 
