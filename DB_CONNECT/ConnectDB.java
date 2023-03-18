@@ -26,7 +26,7 @@ public class ConnectDB {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			
 			connection = DriverManager.getConnection(url,username,password);
-			PreparedStatement ps = connection.prepareStatement("Insert into studentdb.student values (6,'Routray');"); 
+			PreparedStatement ps = connection.prepareStatement("Insert into studentdb.student values (10,'Routray');"); 
 			int status = ps.executeUpdate();
 			if (status!=0)
 			{
