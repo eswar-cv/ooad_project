@@ -11,8 +11,8 @@ user_type varchar(20) NOT NULL
 CREATE TABLE COURSE
 (
 Course_id INT auto_increment PRIMARY KEY, 
-c_name varchar(20), 
-c_desc varchar(50)
+c_name varchar(75), 
+c_desc varchar(150)
 );
 
 CREATE TABLE ASSIGNMENT 
@@ -27,7 +27,7 @@ foreign key(c_id) references COURSE(Course_id)
 
 CREATE TABLE ACC_COURSE
 (
-S_name varchar(20), 
+u_name varchar(20), 
 c_id int, 
 u_type varchar(20), 
 primary key(S_name,c_id,u_type),
