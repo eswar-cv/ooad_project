@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "View",
+            "request": "launch",
+            "mainClass": "View",
+            "projectName": "ooad_project_20ae593d"
+        },
+        {
+            "type": "java",
             "name": "view",
             "request": "launch",
             "mainClass": "view",

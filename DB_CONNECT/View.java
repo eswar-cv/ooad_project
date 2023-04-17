@@ -2,6 +2,7 @@ import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.*;
 
 class Builder {
     int y_point = 50;
@@ -37,7 +38,7 @@ class Builder {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBounds(0, 0, dims.width, dims.height);        
-        
+        int x_point =50;
         JLabel login_heading = get_label("Login", dm, new Dimension(x_point, y_point));
         JTextField login_username = get_textfield(dm, new Dimension(x_point, y_point + 100));
         JPasswordField password = get_textfield_p(dm, new Dimension(x_point, y_point + 200));
@@ -76,7 +77,7 @@ public class View {
         show_login_page(frame);
     }
 
-    ArrayList<String> show_login_page(JFrame frame) {
+    void show_login_page(JFrame frame) {
         Dimension dm = new Dimension(250, 30);
         int x_point = builder.get_position(0, 250, 30, frame.getSize()).width;
         frame.setSize(800, 600);
