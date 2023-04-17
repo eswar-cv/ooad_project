@@ -3,7 +3,7 @@ import java.util.* ;
 import java.sql.* ; 
 
 
-public class get_sub_eval extends model{
+public class get_sub_eval extends Model{
     public ResultSet sub_eval(int c_id) throws Exception
 
 	{

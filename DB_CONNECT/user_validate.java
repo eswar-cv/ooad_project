@@ -1,7 +1,7 @@
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public class user_validate extends model {
+public class user_validate extends Model {
     
     public ArrayList<String> validate(String uname,String Password)throws Exception
 	{
@@ -14,8 +14,10 @@ public class user_validate extends model {
 			resultSet = ps.executeQuery();
 			if(resultSet.next())
 			{
+				// System.out.println(resultSet.getMetaData());
 				x.add(resultSet.getString("user_name"));
 				x.add(resultSet.getString("password"));
+				x.add(resultSet.getString("user_type"));
 				return x;
 			}
 			else 

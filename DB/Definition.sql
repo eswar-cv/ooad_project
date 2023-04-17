@@ -30,8 +30,8 @@ CREATE TABLE ACC_COURSE
 u_name varchar(20), 
 c_id int, 
 u_type varchar(20), 
-primary key(S_name,c_id,u_type),
-foreign key(S_name) references account(user_name), 
+primary key(u_name,c_id,u_type),
+foreign key(u_name) references account(user_name), 
 foreign key(c_id) references COURSE(Course_id));
 
 CREATE TABLE Stud_Teacher

@@ -2,7 +2,7 @@ import java.sql.PreparedStatement;
 import java.util.* ;
 import java.sql.* ; 
 
-    public class get_stud_teacher extends model
+    public class get_stud_teacher extends Model
     {
         public  List<List<String>> stud_teacher(String t_name) throws Exception
 	    {

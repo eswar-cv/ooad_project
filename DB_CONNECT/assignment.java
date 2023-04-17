@@ -3,15 +3,15 @@ import java.util.* ;
 import java.sql.* ; 
 
 
-public class assignment extends model{
+public class assignment extends Model{
     public ResultSet get_assignment(String username,int c_id) throws Exception
 
 	{
 		try{
-			String SELECT_QUERY = "SELECT ASSGN_ID,c_id, deadline, assgn_file, instruc from assignment, acc_course where assignment.c_id = ? and acc_course.u_name = ?;"
+			String SELECT_QUERY = "SELECT ASSGN_ID,c_id, deadline, assgn_file, instruc from assignment, acc_course where assignment.c_id = ? and acc_course.u_name = ?;";
 			PreparedStatement ps = connection.prepareStatement(SELECT_QUERY);
 			ps.setInt(1, c_id);
-            ps.setString(username);
+            ps.setString(2, username);
 			resultSet = ps.executeQuery();
 		}
 		catch(Exception e){

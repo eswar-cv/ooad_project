@@ -3,21 +3,17 @@ import java.util.*;
 import java.sql.* ; 
 
 
-public class model {
+public class Model {
 	static ResultSet resultSet = null;
 	static Connection connection = Connect_DB.createConnection();
 	/***********VALIDATING ACCOUNT********************/
-	public ArrayList<String> validate(String uname,String Password) throws Exception
-	{
+	public ArrayList<String> validate(String uname,String Password) throws Exception {
 		try{
-
 			user_validate x = new user_validate();
 			return x.validate(uname, Password);
-
 		}
 		catch(Exception e){
 			throw(e);
-			
 		}
 		finally {
             close();
@@ -86,7 +82,7 @@ public class model {
 		
 	}
 
-	/******************************** Creating accounts (Admin function)******************************/
+	/******************************** Creating accounts (Admin function) ******************************/
 	public Boolean create_account(String name, String username, String password, String type) throws Exception
 	{
 		try{
@@ -158,7 +154,7 @@ private void close() {
 	public static void main(String [] args) throws Exception
     {
         try {
-			model x = new model();
+			Model x = new Model();
         	List<List<String>> y = x.course("lavu");
         	System.out.println(y);
         } catch (Exception e) {
