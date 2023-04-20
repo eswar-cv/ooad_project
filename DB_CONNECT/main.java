@@ -1,6 +1,7 @@
-public class main {
+public class Main {
     public static void main(String[] args) {
-        Model m = new Model();
-        View v = new View();
+        Model model = new Model();
+        View view = new View();
+        new Controller(model, view);
     }
 }

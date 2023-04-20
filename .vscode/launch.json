@@ -6,6 +6,41 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Model",
+            "request": "launch",
+            "mainClass": "Model",
+            "projectName": "ooad_project_f6d7e80b"
+        },
+        {
+            "type": "java",
+            "name": "Driver",
+            "request": "launch",
+            "mainClass": "Driver",
+            "projectName": "ooad_project_f6d7e80b"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "ooad_project_f6d7e80b"
+        },
+        {
+            "type": "java",
+            "name": "main",
+            "request": "launch",
+            "mainClass": "main",
+            "projectName": "ooad_project_f6d7e80b"
+        },
+        {
+            "type": "java",
+            "name": "View",
+            "request": "launch",
+            "mainClass": "View",
+            "projectName": "ooad_project_f6d7e80b"
+        },
+        {
+            "type": "java",
             "name": "view",
             "request": "launch",
             "mainClass": "view",

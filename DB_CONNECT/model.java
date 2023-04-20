@@ -2,7 +2,6 @@ import java.sql.Connection;
 import java.util.*; 
 import java.sql.* ; 
 
-
 public class Model {
 	static ResultSet resultSet = null;
 	static Connection connection = Connect_DB.createConnection();
@@ -155,7 +154,7 @@ private void close() {
     {
         try {
 			Model x = new Model();
-        	List<List<String>> y = x.course("lavu");
+        	ArrayList<String> y = x.validate("lavu", "lavu");
         	System.out.println(y);
         } catch (Exception e) {
            throw(e);

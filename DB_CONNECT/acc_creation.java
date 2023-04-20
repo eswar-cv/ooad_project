@@ -3,7 +3,6 @@ import java.util.* ;
 import java.sql.* ; 
 
 
-
     public class acc_creation extends Model
     {
         public  Boolean create_account(String name, String username, String password, String type) throws Exception
