@@ -31,6 +31,7 @@ public class Controller {
             if (li.size() == 3) {
                 view.username = username;
                 view.password = password;
+                view.type = li.get(2);
                 view = view.show_dashboard();
             }
             System.out.println(li);
@@ -46,7 +47,5 @@ public class Controller {
         view.username = "null";
         view.password = "null";
         view = view.show_login();
-        
     }
-
 }

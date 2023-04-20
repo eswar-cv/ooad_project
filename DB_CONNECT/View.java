@@ -8,6 +8,7 @@ public class View {
     Dimension pos;
     String username = "null";
     String password = "null";
+    String type = "null";
     Controller controller;
     Builder builder = new Builder(this);
 

@@ -111,7 +111,7 @@ class Builder {
         panel.add(lilo);
         Dimension cdim = get_position(10, 300, 30, this.view.frame.getSize());
         String uname;
-        if (view.username != "null" && view.username != null) uname = view.username;
+        if (view.username != "null" && view.username != null) uname = view.username + " - " + view.type;
         else uname = "Login to access the portal";
         JLabel username = get_label(uname, new Dimension(300, 30), cdim);
         username.setFont(new Font("verdana", 0, 20));
