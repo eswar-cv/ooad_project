@@ -45,6 +45,13 @@ public class View {
                 frame.add(stud_dash);
                 refresh_frame();
             }
+            if(this.type.equals("teacher"))
+            {
+                JPanel stud_dash = builder.get_teach_dash(frame.getSize(),dm,this);
+                frame.add(stud_dash);
+                refresh_frame();
+            }
+
             return this;
         }
         

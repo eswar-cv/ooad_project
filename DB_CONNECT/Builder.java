@@ -1,10 +1,14 @@
 import java.awt.event.*;
 //import java.awt.*;
 import java.awt.Font;
+import java.awt.TextArea;
 import java.awt.Dimension;
 import java.awt.Color;
 import javax.swing.*;
 import javax.swing.event.*;
+
+import com.mysql.cj.x.protobuf.MysqlxNotice.Frame;
+
 import java.util.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -99,7 +103,7 @@ class Builder {
                 List<List<String>> res;
                 res=View.controller.get_classes(view.username);
                 System.out.println("returned");
-                JPanel dash1 = get_class_panel(dims,dm,view,res);
+                JPanel dash1 = get_stud_class_panel(dims,dm,view,res);
                 view.add_elem(dash1);
                 //System.out.println("refereshed");
             }  
@@ -107,7 +111,7 @@ class Builder {
 
         return dash;
     }
-    JPanel get_class_panel(Dimension dims,Dimension dm,View view,List<List<String>> res)
+    JPanel get_stud_class_panel(Dimension dims,Dimension dm,View view,List<List<String>> res)
     {
         int z=100;
         int y=150;
@@ -157,9 +161,107 @@ class Builder {
             dash.add(c);
             dash.add(classes);
             dash.add(descr);
-            
-            
         }
+        return dash;
+    }
+    JPanel get_teach_class_panel(Dimension dims,Dimension dm,View view,List<List<String>> res)
+    {
+        int z=100;
+        int y=150;
+        JPanel dash =get_dashboard(view);
+        System.out.println("Came to get class panel");
+        for (List<String> list : res) {
+            int i=0;
+            String button="", desc="",c_id="";
+            for (String item : list) {
+                if(i==0)
+                {
+                    c_id= item;  
+                }
+                else if(i==1)
+                {
+                    button = item;
+                }
+                else 
+                {
+                    desc = item;
+                }
+
+                i++;
+            }
+            int x_point = get_position(0, 250, 30, dims).width;
+            JLabel c = get_label(c_id,dm,new Dimension(x_point, y_point + y));
+            JButton classes = get_button(button,dm,new Dimension(x_point, y_point+z));
+            String desc1="<html>"+desc+"</html>";
+            JLabel descr = get_label(desc1,dm, new Dimension(x_point, y_point + y+20));
+            
+            z+=120;
+            y+=120;
+            classes.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent e){  
+                    // System.out.println(password.getPassword());
+                    System.out.println("Clicked on the course: "+c.getText());
+                    ResultSet res=View.controller.get_assgn(view.username,Integer.parseInt(c.getText()));
+                        try {
+                            JButton x = new JButton("Add assignment");
+                            x.setBounds(150, 100, 200, 50);
+                            x.setBackground(Color.white);
+                            x.addActionListener(new ActionListener(){  
+                                public void actionPerformed(ActionEvent e){  
+                                    JTextArea instruc = new JTextArea(100,100);
+                                    int x_point = get_position(0, 500, 300, dims).width;
+                                    String str="<html>Enter Instructions</html>";
+                                    JLabel in = get_label(str, dims, dm);
+                                    in.setBounds(x_point, 100, 100,300);
+                                    instruc.setBounds(x_point+150, 100, 500,300);
+                                    str="<html>Enter Deadline</html>";
+                                    JLabel time = get_label(str,dims, dm);
+                                    time.setBounds(x_point,450 , 100,50);
+                                    JTextField t = get_textfield(dims, dm);
+                                    t.setBounds(x_point+150,450 , 500,50);
+                                    JPanel dash1 = get_dashboard(view);
+                                    dash1.add(in);
+                                    dash1.add(instruc);
+                                    dash1.add(time);
+                                    dash1.add(t);
+                                    view.add_elem(dash1);
+                                    //view.controller.add_assgn(c.getText(),desc,deadline);
+                                }  
+                            });
+                            JPanel dash1 = get_assgn_panel(dims,dm,view,res);
+                            dash1.add(x);
+                            view.add_elem(dash1);
+                        } catch (Exception e1) {
+                            
+                            e1.printStackTrace();
+                        }
+                }  
+            }); 
+            dash.add(c);
+            dash.add(classes);
+            dash.add(descr);
+        }
+        return dash;
+    }
+    JPanel get_teach_dash(Dimension dims,Dimension dm,View view)
+    {
+
+        JPanel dash=get_dashboard(view);
+        int x_point = get_position(0, 250, 30, dims).width;
+        JButton classes = get_button("View Classes",dm,new Dimension(x_point, y_point+300));
+        dash.add(classes);
+        classes.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                // System.out.println(password.getPassword());
+                List<List<String>> res;
+                res=View.controller.get_classes(view.username);
+                System.out.println("returned");
+                JPanel dash1 = get_teach_class_panel(dims,dm,view,res);
+                view.add_elem(dash1);
+                //System.out.println("refereshed");
+            }  
+        }); 
+
         return dash;
     }
     //NEEDS CHANGES
