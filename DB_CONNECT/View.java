@@ -1,5 +1,7 @@
 import java.awt.event.*;
 import java.awt.*;
+
+import javax.lang.model.util.ElementScanner14;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -27,16 +29,25 @@ public class View {
         return this;
     }
     View show_dashboard() {
-        frame.getContentPane().removeAll();
-        System.out.println("u " + username + " p " + password);
-        Dimension dm = new Dimension(250, 40);
-        if(this.type.equals("student"))
+
+        if(this.username.equals("null"))
         {
-            JPanel stud_dash = builder.get_stud_dash(frame.getSize(),dm,this);
-            frame.add(stud_dash);
-            refresh_frame();
+            return this.show_login();
         }
-        return this;
+        else 
+        {
+            frame.getContentPane().removeAll();
+            System.out.println("u " + username + " p " + password);
+            Dimension dm = new Dimension(250, 40);
+            if(this.type.equals("student"))
+            {
+                JPanel stud_dash = builder.get_stud_dash(frame.getSize(),dm,this);
+                frame.add(stud_dash);
+                refresh_frame();
+            }
+            return this;
+        }
+        
         
     }
     public View set_controller(Controller ctrler) {
@@ -52,7 +63,7 @@ public class View {
         // System.out.println(login_panel);
         frame.add(login_panel);
         refresh_frame(); 
-        return this;
+        return this; 
     }
     View add_elem(JPanel x)
     {

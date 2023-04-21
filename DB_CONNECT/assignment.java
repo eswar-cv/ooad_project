@@ -8,6 +8,7 @@ public class assignment extends Model{
 
 	{
 		try{
+            List<List<String>> res=new ArrayList<>();
 			String SELECT_QUERY = "SELECT ASSGN_ID,c_id, deadline, assgn_file, instruc from assignment, acc_course where assignment.c_id = ? and acc_course.u_name = ?;";
 			PreparedStatement ps = connection.prepareStatement(SELECT_QUERY);
 			ps.setInt(1, c_id);

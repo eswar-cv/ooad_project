@@ -6,6 +6,13 @@ import java.awt.Color;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 class Builder {
     int y_point = 50;
@@ -107,34 +114,109 @@ class Builder {
         JPanel dash =get_dashboard(view);
         System.out.println("Came to get class panel");
         for (List<String> list : res) {
-            String x="";
             int i=0;
-            String button="", desc="";
+            String button="", desc="",c_id="";
             for (String item : list) {
                 if(i==0)
                 {
-                     button = item;
-                    i++;
+                    c_id= item;  
+                }
+                else if(i==1)
+                {
+                    button = item;
                 }
                 else 
                 {
                     desc = item;
                 }
 
-                
+                i++;
             }
             int x_point = get_position(0, 250, 30, dims).width;
+            JLabel c = get_label(c_id,dm,new Dimension(x_point, y_point + y));
             JButton classes = get_button(button,dm,new Dimension(x_point, y_point+z));
             String desc1="<html>"+desc+"</html>";
-            JLabel descr = get_label(desc1,dm, new Dimension(x_point, y_point + y));
-            z+=100;
-            y+=100;
+            JLabel descr = get_label(desc1,dm, new Dimension(x_point, y_point + y+20));
+            
+            z+=120;
+            y+=120;
+            classes.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent e){  
+                    // System.out.println(password.getPassword());
+                    System.out.println("Clicked on the course: "+c.getText());
+                    ResultSet res=View.controller.get_assgn(view.username,Integer.parseInt(c.getText()));
+                        try {
+                            JPanel dash1 = get_assgn_panel(dims,dm,view,res);
+                            view.add_elem(dash1);
+                        } catch (Exception e1) {
+                            
+                            e1.printStackTrace();
+                        }
+                }  
+            }); 
+            dash.add(c);
             dash.add(classes);
             dash.add(descr);
+            
             
         }
         return dash;
     }
+    //NEEDS CHANGES
+    JPanel get_assgn_panel(Dimension dims,Dimension dm,View view,ResultSet res) throws Exception
+    {
+        int z=100;
+        int y=150;
+        JPanel dash =get_dashboard(view);
+        System.out.println("Came to get assignment panel");
+        File file = new File("output.pdf");
+        try{
+            try (FileOutputStream output = new FileOutputStream(file)) {
+                try{
+                    while(res.next())
+                    {
+                        //ASSGN_ID,c_id, deadline, assgn_file, instruc
+                        InputStream input = res.getBinaryStream("assgn_file");
+                        byte[] buffer = new byte[1024];
+                        while (input.read(buffer) > 0) {
+                            output.write(buffer);
+                        }
+                        int x_point = get_position(0, 250, 30, dims).width;
+                        int a_id = res.getInt("ASSGN_ID");
+                        int c_id = res.getInt("c_id");
+                        String instruc = res.getString("instruc");
+                        Timestamp d = res.getTimestamp("deadline");
+                        JLabel c = get_label(Integer.toString(c_id),dm,new Dimension(x_point, y_point + y));
+                        
+                        //String desc1="<html>"++"</html>";
+                        //JLabel descr = get_label(desc1,dm, new Dimension(x_point, y_point + y+20));
+                        //dash.add()
+   
+                    }
+                }
+                catch(SQLException e)
+                {
+                    int x_point = get_position(0, 250, 30, dims).width;
+                    JLabel c = get_label("No Assignments!",dm,new Dimension(x_point, y_point + y));
+                    dash.add(c);
+                    return dash;
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            int x_point = get_position(0, 250, 30, dims).width;
+            JLabel c = get_label("No Assignments!",dm,new Dimension(x_point, y_point + y));
+            dash.add(c);
+            return dash;
+        }
+            int x_point = get_position(0, 250, 30, dims).width;
+            JLabel c = get_label("Should add files",dm,new Dimension(x_point, y_point + y));
+            dash.add(c);
+            return dash;
+        }
+
+        
     JPanel get_panel(View view) {
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -167,7 +249,17 @@ class Builder {
                 else view.show_login();
             }  
         });
+
+        JButton home = new JButton("Home");
+        home.setBounds(101, 0, 100, 50);
+        home.setBackground(Color.white);
+        home.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                view.show_dashboard();
+            }  
+        });
         panel.add(lilo);
+        panel.add(home);
         Dimension cdim = get_position(10, 300, 30, this.view.frame.getSize());
         String uname;
         if (view.username != "null" && view.username != null) uname = view.username + " - " + view.type;

@@ -65,6 +65,21 @@ public class Controller {
         }
         return res;
     }
+    ResultSet get_assgn(String username,int c_id)
+    {
+        ResultSet res=null;
+        
+        try{
+            res = model.get_user_assignments(username,c_id);
+            return res;
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return res;
+    }
 
     void logout() {
         view.username = "null";

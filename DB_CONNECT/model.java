@@ -114,7 +114,7 @@ public class Model {
 			throw(e);
 			
 		}
-		finally {
+		finally { 
             close();
         } 
 	}
