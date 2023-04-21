@@ -9,10 +9,10 @@ public class View {
     String username = "null";
     String password = "null";
     String type = "null";
-    Controller controller;
+    static Controller controller;
     Builder builder = new Builder(this);
 
-    public View() {
+    public View() { 
         frame = new JFrame("SubmitEase");
         frame.setSize(1200, 860);
         frame.setResizable(false);
@@ -28,10 +28,14 @@ public class View {
     }
     View show_dashboard() {
         frame.getContentPane().removeAll();
-        JPanel dashboard = builder.get_dashboard(this);
         System.out.println("u " + username + " p " + password);
-        frame.add(dashboard);
-        refresh_frame();
+        Dimension dm = new Dimension(250, 40);
+        if(this.type.equals("student"))
+        {
+            JPanel stud_dash = builder.get_stud_dash(frame.getSize(),dm,this);
+            frame.add(stud_dash);
+            refresh_frame();
+        }
         return this;
         
     }
@@ -47,7 +51,16 @@ public class View {
         JPanel login_panel = builder.get_login_page(frame.getSize(), dm, this);
         // System.out.println(login_panel);
         frame.add(login_panel);
+        refresh_frame(); 
+        return this;
+    }
+    View add_elem(JPanel x)
+    {
+        frame.getContentPane().removeAll();
+        Dimension dm = new Dimension(250, 40);
+        frame.add(x);
         refresh_frame();
         return this;
+
     }
 }

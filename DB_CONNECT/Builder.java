@@ -1,7 +1,11 @@
 import java.awt.event.*;
-import java.awt.*;
+//import java.awt.*;
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Color;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.*;
 
 class Builder {
     int y_point = 50;
@@ -61,9 +65,9 @@ class Builder {
         login_button.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
                 // System.out.println(password.getPassword());
-                view.controller.validate_now(login_username.getText(), new String(password.getPassword()));
+                View.controller.validate_now(login_username.getText(), new String(password.getPassword()));
             }  
-        });
+        }); 
         panel.add(login_text);
         panel.add(login_username);
         panel.add(passsword_text);
@@ -75,7 +79,62 @@ class Builder {
         JPanel panel = get_panel(view);
         return panel;
     }
+    JPanel get_stud_dash(Dimension dims,Dimension dm,View view)
+    {
 
+        JPanel dash=get_dashboard(view);
+        int x_point = get_position(0, 250, 30, dims).width;
+        JButton classes = get_button("View Classes",dm,new Dimension(x_point, y_point+300));
+        dash.add(classes);
+        classes.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                // System.out.println(password.getPassword());
+                List<List<String>> res;
+                res=View.controller.get_classes(view.username);
+                System.out.println("returned");
+                JPanel dash1 = get_class_panel(dims,dm,view,res);
+                view.add_elem(dash1);
+                //System.out.println("refereshed");
+            }  
+        }); 
+
+        return dash;
+    }
+    JPanel get_class_panel(Dimension dims,Dimension dm,View view,List<List<String>> res)
+    {
+        int z=100;
+        int y=150;
+        JPanel dash =get_dashboard(view);
+        System.out.println("Came to get class panel");
+        for (List<String> list : res) {
+            String x="";
+            int i=0;
+            String button="", desc="";
+            for (String item : list) {
+                if(i==0)
+                {
+                     button = item;
+                    i++;
+                }
+                else 
+                {
+                    desc = item;
+                }
+
+                
+            }
+            int x_point = get_position(0, 250, 30, dims).width;
+            JButton classes = get_button(button,dm,new Dimension(x_point, y_point+z));
+            String desc1="<html>"+desc+"</html>";
+            JLabel descr = get_label(desc1,dm, new Dimension(x_point, y_point + y));
+            z+=100;
+            y+=100;
+            dash.add(classes);
+            dash.add(descr);
+            
+        }
+        return dash;
+    }
     JPanel get_panel(View view) {
         JPanel panel = new JPanel();
         panel.setLayout(null);

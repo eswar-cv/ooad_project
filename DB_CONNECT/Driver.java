@@ -9,5 +9,4 @@ public class Driver {
         Controller c = new Controller(model, view);
         // Controller c = new Controller(m, v); // the controller must have a copy of the model and view
     } 
-
 }

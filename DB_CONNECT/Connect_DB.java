@@ -7,8 +7,8 @@ public class Connect_DB {
  {
      Connection con = null;
      String url = "jdbc:mysql://localhost:3306/project?characterEncoding=utf8"; //MySQL URL and followed by the database name
-     String username = "ooad_project"; //MySQL username
-     String password = "ooad_password"; //MySQL password   
+     String username = "dhanu"; //MySQL username
+     String password = "dhanu"; //MySQL password   
      try 
      {
          try 

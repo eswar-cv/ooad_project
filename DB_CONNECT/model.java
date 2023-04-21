@@ -20,7 +20,7 @@ public class Model {
 	}
 
 	/************** GEt COURSE DETAILS *********************/
-
+ 
 	public List<List<String>> course(String uname) throws Exception
 	{
 		try{

@@ -11,7 +11,7 @@ import java.sql.* ;
  * fire an event, which can update values in your model, or
  * update your view.
  */
-
+ 
 public class Controller {
 
     private View view;
@@ -19,10 +19,10 @@ public class Controller {
 
     public Controller(Model model, View view) {
         this.model = model;
-        this.view = view;
+        this.view = view; 
         view = view.set_controller(this);
-        // view = view.show_login();
-        view = view.show_dashboard();
+        view = view.show_login();
+        //view = view.show_dashboard();
     }
 
     void validate_now(String username, String password) {
@@ -34,6 +34,10 @@ public class Controller {
                 view.type = li.get(2);
                 view = view.show_dashboard();
             }
+            if(li.size()==2)
+            {
+                view=view.show_login();
+            }
             System.out.println(li);
         }
         catch(Exception e){
@@ -41,6 +45,25 @@ public class Controller {
 		}
         view = view.refresh_frame();
         
+    }
+
+    List<List<String>> get_classes(String username)
+    {
+        List<List<String>>res=new ArrayList<>();
+        List<String> x= new ArrayList<>();
+        x.add("");
+        x.add("");
+        
+        try{
+            res = model.course(username);
+            System.out.println(res);
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return res;
     }
 
     void logout() {
