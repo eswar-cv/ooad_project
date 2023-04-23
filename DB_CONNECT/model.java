@@ -1,4 +1,3 @@
-import java.sql.Connection;
 import java.util.*; 
 import java.sql.* ; 
 
@@ -102,12 +101,12 @@ public class Model {
 
 	/******************************** User assignments******************************/
 
-	public ResultSet get_user_assignments(String username, int c_id) throws Exception
+	public List<List<String>> get_user_assignments(String username, int c_id) throws Exception
 	{
 		try{
 
 			assignment x = new assignment();
-			ResultSet y = x.get_assignment(username,c_id);
+			List<List<String>> y = x.get_assignment(username,c_id);
 			return y;
 		}
 		catch(Exception e){
@@ -118,6 +117,26 @@ public class Model {
             close();
         } 
 	}
+	void add_assignments(String instruc, String Deadline, int c_id) throws SQLException
+	{
+		try{
+			String Query = "Insert into assignment(c_id,deadline,instruc) values(?,?, ?);";
+			PreparedStatement ps = connection.prepareStatement(Query);
+			ps.setInt(1,c_id);
+			ps.setString(2, Deadline);
+			ps.setString(3, instruc);
+			int x=ps.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			throw(e);
+		}
+		finally{
+			close();
+		}
+		
+	}
+	
 	
 	/*private void writeResultSet(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set

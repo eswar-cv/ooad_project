@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.TextArea;
 import java.awt.Dimension;
 import java.awt.Color;
+
+import javax.lang.model.util.ElementScanner14;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -148,7 +150,7 @@ class Builder {
                 public void actionPerformed(ActionEvent e){  
                     // System.out.println(password.getPassword());
                     System.out.println("Clicked on the course: "+c.getText());
-                    ResultSet res=View.controller.get_assgn(view.username,Integer.parseInt(c.getText()));
+                    List<List<String>>  res=View.controller.get_assgn(view.username,Integer.parseInt(c.getText()));
                         try {
                             JPanel dash1 = get_assgn_panel(dims,dm,view,res);
                             view.add_elem(dash1);
@@ -201,7 +203,7 @@ class Builder {
                 public void actionPerformed(ActionEvent e){  
                     // System.out.println(password.getPassword());
                     System.out.println("Clicked on the course: "+c.getText());
-                    ResultSet res=View.controller.get_assgn(view.username,Integer.parseInt(c.getText()));
+                    List<List<String>>  res=View.controller.get_assgn(view.username,Integer.parseInt(c.getText()));
                         try {
                             JButton x = new JButton("Add assignment");
                             x.setBounds(150, 100, 200, 50);
@@ -219,11 +221,24 @@ class Builder {
                                     time.setBounds(x_point,450 , 100,50);
                                     JTextField t = get_textfield(dims, dm);
                                     t.setBounds(x_point+150,450 , 500,50);
+                                    JButton submit = get_button("Submit", dims, dm);
+                                    submit.setBounds(x_point+150,510 , 100,50);
+                                    submit.addActionListener(new ActionListener() {
+                                        public void actionPerformed(ActionEvent e)
+                                        {
+                                            String text=instruc.getText();
+                                            String time = t.getText();
+                                            view.controller.add_assgn(text,time,Integer.parseInt(c.getText()));
+                                            JPanel dash1 =get_teach_dash(dims, dm, view);
+                                            view.add_elem(dash1);
+                                        }
+                                    });
                                     JPanel dash1 = get_dashboard(view);
                                     dash1.add(in);
                                     dash1.add(instruc);
                                     dash1.add(time);
                                     dash1.add(t);
+                                    dash1.add(submit);
                                     view.add_elem(dash1);
                                     //view.controller.add_assgn(c.getText(),desc,deadline);
                                 }  
@@ -265,57 +280,89 @@ class Builder {
         return dash;
     }
     //NEEDS CHANGES
-    JPanel get_assgn_panel(Dimension dims,Dimension dm,View view,ResultSet res) throws Exception
+    JPanel get_assgn_panel(Dimension dims,Dimension dm,View view, List<List<String>> res) throws Exception
     {
-        int z=100;
-        int y=150;
+
         JPanel dash =get_dashboard(view);
         System.out.println("Came to get assignment panel");
-        File file = new File("output.pdf");
+        int z=100;
+        int y=150;
+        int x= 200;
         try{
-            try (FileOutputStream output = new FileOutputStream(file)) {
-                try{
-                    while(res.next())
+            
+            for (List<String> list : res) {
+                int i=0;
+                String instruc="", deadline="",a_id="";
+                String c_id="";
+                for (String item : list) {
+                    if(i==0)
                     {
-                        //ASSGN_ID,c_id, deadline, assgn_file, instruc
-                        InputStream input = res.getBinaryStream("assgn_file");
-                        byte[] buffer = new byte[1024];
-                        while (input.read(buffer) > 0) {
-                            output.write(buffer);
-                        }
-                        int x_point = get_position(0, 250, 30, dims).width;
-                        int a_id = res.getInt("ASSGN_ID");
-                        int c_id = res.getInt("c_id");
-                        String instruc = res.getString("instruc");
-                        Timestamp d = res.getTimestamp("deadline");
-                        JLabel c = get_label(Integer.toString(c_id),dm,new Dimension(x_point, y_point + y));
-                        
-                        //String desc1="<html>"++"</html>";
-                        //JLabel descr = get_label(desc1,dm, new Dimension(x_point, y_point + y+20));
-                        //dash.add()
-   
+                        a_id= item;  
                     }
+                    else if(i==1)
+                    {
+                        c_id = item;
+                    }
+                    else if(i==2)
+                    {
+                        deadline = item;
+                    }
+                    else 
+                    {
+                        instruc=item;
+                    }
+
+                    i++;
                 }
-                catch(SQLException e)
-                {
-                    int x_point = get_position(0, 250, 30, dims).width;
-                    JLabel c = get_label("No Assignments!",dm,new Dimension(x_point, y_point + y));
-                    dash.add(c);
-                    return dash;
-                }
-            }
+            int x_point = get_position(0, 250, 30, dims).width;
+            JLabel c = get_label(c_id,dm,new Dimension(x_point, y_point + z));
+            JLabel a = get_label(a_id,dm,new Dimension(x_point, y_point + y));
+            JButton button = get_button("Open", dims, dm);
+            button.setBounds(x_point,y_point+x , 100,30);
+            dash.add(c);
+            dash.add(a);
+            dash.add(button);
+            z+=120;
+            y+=120;
+            x+=120;
+            button.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent e){  
+                    // System.out.println(password.getPassword());
+                    System.out.println("Clicked on the assignmnet: "+a.getText());
+                    JPanel dash1 =get_dashboard(view);
+                    JLabel course_name = get_label("Course ID",dm,new Dimension(x_point, y_point ));
+                    JLabel course = get_label(c.getText(),dm,new Dimension(x_point+50, y_point ));
+                    JLabel a_name = get_label("Assignment ID",dm,new Dimension(x_point, y_point +50));
+                    JLabel a_ = get_label(a.getText(),dm,new Dimension(x_point+70, y_point +50));
+                    JLabel sub_name = get_label("Submission",dm,new Dimension(x_point, y_point +100));
+                    JTextArea sub = new JTextArea(100,100);
+                    sub.setBounds(x_point+175,y_point+100,500,300);
+                    JButton button = get_button("Submit", dims, dm);
+                    button.setBounds(x_point,y_point+450 , 100,30);
+                    dash1.add(course);
+                    dash1.add(course_name);
+                    dash1.add(a_name);
+                    dash1.add(a_);
+                    dash1.add(button);
+                    dash1.add(sub_name);
+                    dash1.add(sub);
+                    view.add_elem(dash1);
+                    button.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e){  
+                            
+                        }
+                    };
+
+                }  
+            }); 
+            
+        }
+        return dash;
         }
         catch(Exception e)
         {
-            int x_point = get_position(0, 250, 30, dims).width;
-            JLabel c = get_label("No Assignments!",dm,new Dimension(x_point, y_point + y));
-            dash.add(c);
-            return dash;
+            throw(e);
         }
-            int x_point = get_position(0, 250, 30, dims).width;
-            JLabel c = get_label("Should add files",dm,new Dimension(x_point, y_point + y));
-            dash.add(c);
-            return dash;
         }
 
         

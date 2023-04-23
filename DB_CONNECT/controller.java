@@ -65,9 +65,9 @@ public class Controller {
         }
         return res;
     }
-    ResultSet get_assgn(String username,int c_id)
+    List<List<String>> get_assgn(String username,int c_id)
     {
-        ResultSet res=null;
+        List<List<String>>  res=null;
         
         try{
             res = model.get_user_assignments(username,c_id);
@@ -80,7 +80,18 @@ public class Controller {
         }
         return res;
     }
-
+    void add_assgn(String instruc, String deadline, int c_id)
+    {
+        try{
+             model.add_assignments(instruc,deadline,c_id);
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        
+    }
     void logout() {
         view.username = "null";
         view.password = "null";
