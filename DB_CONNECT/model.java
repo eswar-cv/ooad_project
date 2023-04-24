@@ -117,6 +117,68 @@ public class Model {
             close();
         } 
 	}
+
+	public List<List<String>> get_teach_assignments(int c_id) throws Exception
+	{
+		List<List<String>> y = new ArrayList<>();
+		try{
+			String Query = "select assgn_id, deadline, instruc from assignment where c_id=?;";
+			PreparedStatement ps = connection.prepareStatement(Query);
+			ps.setInt(1,c_id);
+			resultSet = ps.executeQuery();
+			while(resultSet.next())
+			{
+				String x=String.valueOf(resultSet.getInt("assgn_id"));
+				String deadlinee = resultSet.getString("deadline");
+				String instruc = resultSet.getString("instruc");
+				ArrayList<String> listt = new ArrayList<>();
+				listt.add(x);
+				listt.add(deadlinee);
+				listt.add(instruc);
+				listt.add(String.valueOf(c_id));
+				y.add(listt);
+				
+			}
+		}
+		catch(Exception e){
+			throw(e);
+			
+		}
+		finally { 
+            close();
+        } 
+		return y;
+	}
+
+	public List<List<String>> get_stud_assgn(int c_id,int a_id) throws Exception
+	{
+		List<List<String>> y = new ArrayList<>();
+		try{
+			String Query = "Select stud_name,comments from submission where c_id=? and a_id=?;";
+			PreparedStatement ps = connection.prepareStatement(Query);
+			ps.setInt(1,c_id);
+			ps.setInt(2,a_id);
+			resultSet = ps.executeQuery();
+			while(resultSet.next())
+			{
+				String deadlinee = resultSet.getString("comments");
+				String instruc = resultSet.getString("stud_name");
+				ArrayList<String> listt = new ArrayList<>();
+				listt.add(deadlinee);
+				listt.add(instruc);
+				y.add(listt);
+				
+			}
+		}
+		catch(Exception e){
+			throw(e);
+			
+		}
+		finally { 
+            close();
+        } 
+		return y;
+	}
 	void add_assignments(String instruc, String Deadline, int c_id) throws SQLException
 	{
 		try{
@@ -136,8 +198,107 @@ public class Model {
 		}
 		
 	}
+	void enter_marks(String username,int marks, int c_id, int a_id) throws SQLException
+	{
+		try{
+			String Query = "Update submission set results= ?  where stud_name=? and c_id =? and a_id=?;";
+			PreparedStatement ps = connection.prepareStatement(Query);
+			ps.setInt(1,marks);
+			ps.setString(2,username);
+			ps.setInt(3,c_id);
+			ps.setInt(4,a_id);
+			int x=ps.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			throw(e);
+		}
+		finally{
+			close();
+		}
+	}
+	void add_sub(String user_name, int c_id, int a_id, String comments) throws SQLException
+	{
+		try{
+			String delete ="Delete from submission where stud_name=? and c_id=? and a_id=?;";
+			PreparedStatement ps1 = connection.prepareStatement(delete);
+			ps1.setInt(2,c_id);
+			ps1.setString(1, user_name);
+			ps1.setInt(3,a_id);
+			int x=ps1.executeUpdate();
+			String Query = "Insert into submission(c_id,stud_name,a_id,comments) values(?,?, ?,?);";
+			PreparedStatement ps = connection.prepareStatement(Query);
+			ps.setInt(1,c_id);
+			ps.setString(2, user_name);
+			ps.setInt(3,a_id);
+			ps.setString(4, comments);
+			int y=ps.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			throw(e);
+		}
+		finally{
+			close();
+		}
+	}
 	
-	
+	List<String> get_sub_stud(String username,int c_id,int a_id) throws SQLException
+	{
+		List<String> y =new ArrayList<String>();
+
+		try{
+			String Query = "Select comments,results from submission where stud_name=? and c_id=? and a_id=?;";
+			PreparedStatement ps = connection.prepareStatement(Query);
+			ps.setInt(2,c_id);
+			ps.setString(1, username);
+			ps.setInt(3,a_id);
+			resultSet = ps.executeQuery();
+			while(resultSet.next())
+			{
+				String x=resultSet.getString("comments");
+				String z= String.valueOf(resultSet.getInt("results"));
+				y.add(x);
+				y.add(z);
+				
+			}
+		}
+		catch(SQLException e)
+		{
+			throw(e);
+		}
+		finally{
+			close();
+		}
+		y.add("");
+		y.add("");
+		return y;
+	}
+	int get_marks(String username, int c_id,int a_id) throws SQLException
+	{
+		int x=0;
+		try{
+			String delete ="Select results from submission where stud_name=? and c_id = ? and a_id=?;";
+			PreparedStatement ps1 = connection.prepareStatement(delete);
+			ps1.setInt(2,c_id);
+			ps1.setString(1, username);
+			ps1.setInt(3,a_id);
+			resultSet=ps1.executeQuery();
+			while(resultSet.next())
+			{
+				x=resultSet.getInt("results");
+			}
+			
+		}
+		catch(SQLException e)
+		{
+			throw(e);
+		}
+		finally{
+			close();
+		}
+		return x;
+	}
 	/*private void writeResultSet(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set
 		System.out.println("Table: " + resultSet.getMetaData().getTableName(1));

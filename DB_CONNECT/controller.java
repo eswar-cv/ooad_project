@@ -1,5 +1,4 @@
 import java.awt.event.*;
-import java.sql.Connection;
 import java.util.*; 
 import java.sql.* ; 
 /**
@@ -92,9 +91,83 @@ public class Controller {
         }
         
     }
+    void submit_assgn(String user_name, int c_id, int a_id, String comments)
+    {
+        try{
+            model.add_sub(user_name,c_id,a_id,comments);
+           
+       }
+       catch(Exception e)
+       {
+           System.out.println(e);
+       }
+    }
+    List<String> get_sub_stud(String username, int c_id, int a_id) throws Exception 
+    {
+        List<String> y = new ArrayList<>();
+        try{
+            y=model.get_sub_stud(username,c_id,a_id);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return y;
+    }
+
+    List<List<String>> get_teach_assgn(int c_id)
+    {
+        List<List<String>>  res=null;
+        try{
+            res = model.get_teach_assignments(c_id);
+            return res;
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return res;
+    }
+    List<List<String>> get_stud_assgn(int c_id,int a_id)
+    {
+        List<List<String>>  res=new ArrayList<>();
+        try{
+            res = model.get_stud_assgn(c_id,a_id);
+            return res;
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+        return res;
+    }
     void logout() {
         view.username = "null";
         view.password = "null";
         view = view.show_login();
+    }
+    void enter_marks(String username,int marks, int c_id,int a_id) throws Exception
+    {
+        try{
+            model.enter_marks(username,marks,c_id,a_id);
+        }
+        catch(Exception e)
+        {
+            throw(e);
+        }
+    }
+    int get_marks(String username, int c_id,int a_id) throws Exception
+    {
+        int x=0;
+        try{
+            x=model.get_marks(username,c_id,a_id);
+        }
+        catch(Exception e)
+        {
+            throw(e);
+        }
+        return x;
     }
 }
